@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:tic_tac_toe/constants/colors.dart';
 
 class GamePanel extends StatelessWidget {
-  final String identifier;
+  final List<String> identifier;
   final Color bgcolor;
-  final Color textcolor;
+
+  final action;
   const GamePanel(
       {super.key,
       required this.identifier,
       required this.bgcolor,
-      required this.textcolor});
+      required this.action});
 
   @override
   Widget build(BuildContext context) {
@@ -28,17 +30,18 @@ class GamePanel extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  identifier,
+                  identifier[index],
                   style: TextStyle(
                     fontSize: 40,
-                    color: textcolor,
+                    color:
+                        identifier[index] == "X" ? primarycolor : dangercolor,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ),
             onTap: () {
-              print(identifier);
+              action(index);
             },
           );
         });
