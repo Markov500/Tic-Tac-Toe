@@ -20,6 +20,7 @@ class GamePanel extends StatelessWidget {
           crossAxisCount: 3,
           mainAxisSpacing: 15,
           crossAxisSpacing: 15,
+          childAspectRatio: 1.18,
         ),
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
@@ -32,10 +33,10 @@ class GamePanel extends StatelessWidget {
                 child: Text(
                   identifier[index],
                   style: TextStyle(
-                    fontSize: 40,
+                    fontSize: 55,
                     color:
                         identifier[index] == "X" ? primarycolor : dangercolor,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w900,
                   ),
                 ),
               ),

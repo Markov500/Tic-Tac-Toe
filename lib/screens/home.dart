@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/constants/colors.dart';
 import 'package:tic_tac_toe/widgets/game_panel.dart';
 import 'package:tic_tac_toe/widgets/player.dart';
+import 'package:tic_tac_toe/widgets/text_icon_button.dart';
 
 class Home extends StatefulWidget {
   const Home({
@@ -17,6 +18,7 @@ class _HomeState extends State<Home> {
   int player2Score = 0;
   String information = "Turn of player O";
   bool isOTurn = true;
+  bool gameOn = false;
   List<String> boxList = ["", "", "", "", "", "", "", "", ""];
 
   void handlePlayerTurn(int index) async {
@@ -88,10 +90,11 @@ class _HomeState extends State<Home> {
     if (winner != "") {
       setState(() {
         information = "Player $winner wins!!";
+        gameOn = false;
       });
 
       await Future.delayed(
-          Duration(milliseconds: 300),
+          Duration(milliseconds: 1500),
           () => setState(() {
                 isOTurn
                     ? information = "Turn of player O"
@@ -152,11 +155,12 @@ class _HomeState extends State<Home> {
               child: GamePanel(
                 identifier: boxList,
                 bgcolor: secondarycolor,
-                action: handlePlayerTurn,
+                action: gameOn ? handlePlayerTurn : print,
               ),
             ),
           ),
           Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Container(
                 padding: const EdgeInsets.all(20),
@@ -167,7 +171,16 @@ class _HomeState extends State<Home> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              )
+              ),
+              gameOn
+                  ? Text("")
+                  : TextIconButton(
+                      action: () {
+                        setState(() {
+                          gameOn = true;
+                        });
+                      },
+                    )
             ],
           )
         ],

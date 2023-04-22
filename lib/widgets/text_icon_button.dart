@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/constants/colors.dart';
 
 class TextIconButton extends StatelessWidget {
-  const TextIconButton({super.key});
+  final action;
+  const TextIconButton({super.key, required this.action});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class TextIconButton extends StatelessWidget {
         size: 22,
       ),
       onPressed: () {
-        print("play");
+        action();
       },
     );
   }
