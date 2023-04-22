@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/constants/colors.dart';
 import 'package:tic_tac_toe/widgets/game_panel.dart';
 import 'package:tic_tac_toe/widgets/player.dart';
-import 'package:tic_tac_toe/widgets/text_icon_button.dart';
 
 class Home extends StatefulWidget {
   const Home({
@@ -16,11 +15,11 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int player1Score = 0;
   int player2Score = 0;
-  String information = "Informations";
+  String information = "Turn of player O";
   bool isOTurn = true;
   List<String> boxList = ["", "", "", "", "", "", "", "", ""];
 
-  void handlePlayerTurn(int index) {
+  void handlePlayerTurn(int index) async {
     setState(() {
       if (isOTurn && boxList[index] == "") {
         boxList[index] = "O";
@@ -35,88 +34,80 @@ class _HomeState extends State<Home> {
           : information = "Turn of player X";
     });
     winTheGame();
-    if (boxList.where((element) => element == "").isEmpty) {
-      setState(() {
-        information = "Nobody win";
-        Future.delayed(const Duration(seconds: 2));
-        boxList = ["", "", "", "", "", "", "", "", ""];
-        isOTurn
-            ? information = "Turn of player O"
-            : information = "Turn of player X";
-      });
-    }
   }
 
-  void winTheGame() {
+  void winTheGame() async {
+    String winner = "";
     if (boxList[0] == boxList[1] &&
         boxList[0] == boxList[2] &&
         boxList[0] != "") {
-      setState(() {
-        information = "The player " + boxList[0] + " wins";
-      });
-      incrementScore(boxList[0]);
-      Future.delayed(const Duration(seconds: 2));
+      winner = boxList[0];
     } else if (boxList[0] == boxList[3] &&
         boxList[0] == boxList[6] &&
         boxList[0] != "") {
-      setState(() {
-        information = "The player " + boxList[0] + " wins";
-      });
-      incrementScore(boxList[0]);
-      Future.delayed(const Duration(seconds: 2));
+      winner = boxList[0];
     } else if (boxList[6] == boxList[7] &&
         boxList[6] == boxList[8] &&
         boxList[6] != "") {
-      setState(() {
-        information = "The player " + boxList[6] + " wins";
-      });
-      incrementScore(boxList[6]);
-      Future.delayed(const Duration(seconds: 2));
+      winner = boxList[6];
     } else if (boxList[2] == boxList[5] &&
         boxList[2] == boxList[8] &&
         boxList[2] != "") {
-      setState(() {
-        information = "The player " + boxList[2] + " wins";
-      });
-      incrementScore(boxList[2]);
-      Future.delayed(const Duration(seconds: 2));
+      winner = boxList[2];
     } else if (boxList[2] == boxList[4] &&
         boxList[2] == boxList[6] &&
         boxList[2] != "") {
-      setState(() {
-        information = "The player " + boxList[2] + " wins";
-      });
-      incrementScore(boxList[2]);
-      Future.delayed(const Duration(seconds: 2));
+      winner = boxList[2];
     } else if (boxList[0] == boxList[4] &&
         boxList[0] == boxList[8] &&
         boxList[0] != "") {
-      setState(() {
-        information = "The player " + boxList[0] + " wins";
-      });
-      incrementScore(boxList[0]);
+      winner = boxList[0];
     } else if (boxList[1] == boxList[4] &&
         boxList[1] == boxList[7] &&
         boxList[1] != "") {
-      setState(() {
-        information = "The player " + boxList[1] + " wins";
-      });
-      incrementScore(boxList[1]);
+      winner = boxList[1];
     } else if (boxList[3] == boxList[4] &&
         boxList[3] == boxList[5] &&
         boxList[3] != "") {
+      winner = boxList[3];
+    } else if (boxList.where((element) => element == "").isEmpty) {
       setState(() {
-        information = "The player " + boxList[3] + " wins";
+        information = "Nobody win";
+
+        boxList = ["", "", "", "", "", "", "", "", ""];
       });
-      incrementScore(boxList[3]);
+      await Future.delayed(
+          Duration(milliseconds: 1500),
+          () => setState(() {
+                isOTurn
+                    ? information = "Turn of player O"
+                    : information = "Turn of player X";
+              }));
+    }
+
+    if (winner != "") {
+      setState(() {
+        information = "Player $winner wins!!";
+      });
+
+      await Future.delayed(
+          Duration(milliseconds: 300),
+          () => setState(() {
+                isOTurn
+                    ? information = "Turn of player O"
+                    : information = "Turn of player X";
+              }));
+      incrementScore(winner);
     }
   }
 
-  void incrementScore(String player) {
-    setState(() {
-      (player == "O") ? player1Score += 1 : player2Score += 1;
-      boxList = ["", "", "", "", "", "", "", "", ""];
-    });
+  void incrementScore(String player) async {
+    await Future.delayed(
+        Duration(milliseconds: 200),
+        () => setState(() {
+              (player == "O") ? player1Score += 1 : player2Score += 1;
+              boxList = ["", "", "", "", "", "", "", "", ""];
+            }));
   }
 
   @override
