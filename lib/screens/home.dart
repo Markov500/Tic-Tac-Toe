@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/constants/colors.dart';
 import 'package:tic_tac_toe/widgets/game_panel.dart';
@@ -19,9 +20,30 @@ class _HomeState extends State<Home> {
   String information = "Turn of player O";
   bool isOTurn = true;
   bool gameOn = false;
+  static const maxseconds = 8;
+  int seconds = maxseconds;
+  Timer? timer;
   List<String> boxList = ["", "", "", "", "", "", "", "", ""];
   List<int> winBoxIndex = [];
+/*
+  void startTimer() {
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (seconds > 0) {
+        seconds--;
+      } else {
+        stopTimer();
+      }
+    });
+  }
 
+  void stopTimer() {
+    timer?.cancel();
+  }
+
+  void resetIimer() {
+    seconds = maxseconds;
+  }
+*/
   void handlePlayerTurn(int index) async {
     setState(() {
       if (isOTurn && boxList[index] == "") {
@@ -36,10 +58,10 @@ class _HomeState extends State<Home> {
           ? information = "Turn of player O"
           : information = "Turn of player X";
     });
-    winTheGame();
+    isWon();
   }
 
-  void winTheGame() async {
+  void isWon() async {
     String winner = "";
     if (boxList[0] == boxList[1] &&
         boxList[0] == boxList[2] &&
@@ -111,22 +133,24 @@ class _HomeState extends State<Home> {
                     : information = "Turn of player X";
               }));
     }
+  }
 
-    if (winner != "") {
-      setState(() {
-        information = "Player $winner wins!!";
-        gameOn = false;
-      });
+  void win(String winner) async {
+    setState(() {
+      information = "Player $winner wins!!";
+      gameOn = false;
+    });
 
-      await Future.delayed(
-          Duration(milliseconds: 1500),
-          () => setState(() {
-                isOTurn
-                    ? information = "Turn of player O"
-                    : information = "Turn of player X";
-              }));
-      incrementScore(winner);
-    }
+    await Future.delayed(
+        Duration(milliseconds: 1500),
+        () => setState(() {
+              isOTurn
+                  ? information = "Turn of player O"
+                  : information = "Turn of player X";
+              boxList = ["", "", "", "", "", "", "", "", ""];
+              winBoxIndex = [];
+            }));
+    incrementScore(winner);
   }
 
   void incrementScore(String player) async {
@@ -134,8 +158,6 @@ class _HomeState extends State<Home> {
         Duration(milliseconds: 200),
         () => setState(() {
               (player == "O") ? player1Score += 1 : player2Score += 1;
-              boxList = ["", "", "", "", "", "", "", "", ""];
-              winBoxIndex = [];
             }));
   }
 
