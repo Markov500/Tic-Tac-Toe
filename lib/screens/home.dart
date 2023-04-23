@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/constants/colors.dart';
 import 'package:tic_tac_toe/widgets/game_panel.dart';
@@ -25,25 +26,21 @@ class _HomeState extends State<Home> {
   Timer? timer;
   List<String> boxList = ["", "", "", "", "", "", "", "", ""];
   List<int> winBoxIndex = [];
-/*
+
   void startTimer() {
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (seconds > 0) {
         seconds--;
       } else {
-        stopTimer();
+        timer.cancel();
       }
     });
-  }
-
-  void stopTimer() {
-    timer?.cancel();
   }
 
   void resetIimer() {
     seconds = maxseconds;
   }
-*/
+
   void handlePlayerTurn(int index) async {
     setState(() {
       if (isOTurn && boxList[index] == "") {
@@ -132,6 +129,11 @@ class _HomeState extends State<Home> {
                     ? information = "Turn of player O"
                     : information = "Turn of player X";
               }));
+    }
+    if (seconds == 0) {
+      isOTurn ? win("X") : win("O");
+    } else if (winner != "") {
+      win(winner);
     }
   }
 
