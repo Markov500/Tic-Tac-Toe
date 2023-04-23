@@ -6,11 +6,13 @@ class GamePanel extends StatelessWidget {
   final Color bgcolor;
 
   final action;
+  final List<int> winIndex;
   const GamePanel(
       {super.key,
       required this.identifier,
       required this.bgcolor,
-      required this.action});
+      required this.action,
+      required this.winIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class GamePanel extends StatelessWidget {
           return GestureDetector(
             child: Container(
               decoration: BoxDecoration(
-                color: bgcolor,
+                color: winIndex.contains(index) ? Colors.black87 : bgcolor,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Center(

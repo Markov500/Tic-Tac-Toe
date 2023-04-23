@@ -20,6 +20,7 @@ class _HomeState extends State<Home> {
   bool isOTurn = true;
   bool gameOn = false;
   List<String> boxList = ["", "", "", "", "", "", "", "", ""];
+  List<int> winBoxIndex = [];
 
   void handlePlayerTurn(int index) async {
     setState(() {
@@ -44,34 +45,58 @@ class _HomeState extends State<Home> {
         boxList[0] == boxList[2] &&
         boxList[0] != "") {
       winner = boxList[0];
+      setState(() {
+        winBoxIndex.addAll([0, 1, 2]);
+      });
     } else if (boxList[0] == boxList[3] &&
         boxList[0] == boxList[6] &&
         boxList[0] != "") {
       winner = boxList[0];
+      setState(() {
+        winBoxIndex.addAll([0, 3, 6]);
+      });
     } else if (boxList[6] == boxList[7] &&
         boxList[6] == boxList[8] &&
         boxList[6] != "") {
       winner = boxList[6];
+      setState(() {
+        winBoxIndex.addAll([6, 7, 8]);
+      });
     } else if (boxList[2] == boxList[5] &&
         boxList[2] == boxList[8] &&
         boxList[2] != "") {
       winner = boxList[2];
+      setState(() {
+        winBoxIndex.addAll([2, 5, 8]);
+      });
     } else if (boxList[2] == boxList[4] &&
         boxList[2] == boxList[6] &&
         boxList[2] != "") {
       winner = boxList[2];
+      setState(() {
+        winBoxIndex.addAll([2, 4, 6]);
+      });
     } else if (boxList[0] == boxList[4] &&
         boxList[0] == boxList[8] &&
         boxList[0] != "") {
       winner = boxList[0];
+      setState(() {
+        winBoxIndex.addAll([0, 4, 8]);
+      });
     } else if (boxList[1] == boxList[4] &&
         boxList[1] == boxList[7] &&
         boxList[1] != "") {
       winner = boxList[1];
+      setState(() {
+        winBoxIndex.addAll([1, 4, 7]);
+      });
     } else if (boxList[3] == boxList[4] &&
         boxList[3] == boxList[5] &&
         boxList[3] != "") {
       winner = boxList[3];
+      setState(() {
+        winBoxIndex.addAll([3, 4, 5]);
+      });
     } else if (boxList.where((element) => element == "").isEmpty) {
       setState(() {
         information = "Nobody win";
@@ -110,6 +135,7 @@ class _HomeState extends State<Home> {
         () => setState(() {
               (player == "O") ? player1Score += 1 : player2Score += 1;
               boxList = ["", "", "", "", "", "", "", "", ""];
+              winBoxIndex = [];
             }));
   }
 
@@ -154,6 +180,7 @@ class _HomeState extends State<Home> {
               padding: const EdgeInsets.all(20),
               child: GamePanel(
                 identifier: boxList,
+                winIndex: winBoxIndex,
                 bgcolor: secondarycolor,
                 action: gameOn ? handlePlayerTurn : print,
               ),
