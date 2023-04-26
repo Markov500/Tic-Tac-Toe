@@ -45,11 +45,11 @@ class _HomeState extends State<Home> {
     setState(() {
       if (isOTurn && boxList[index] == "") {
         boxList[index] = "O";
+        isOTurn = !isOTurn;
       } else if (!isOTurn && boxList[index] == "") {
         boxList[index] = "X";
+        isOTurn = !isOTurn;
       }
-
-      isOTurn = !isOTurn;
 
       isOTurn
           ? information = "Turn of player O"
